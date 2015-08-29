@@ -1,7 +1,8 @@
 import React from "react";
 require('./css/bootstrap.css')
+var Main = require('./components/main')
 
 React.render(
-  React.createElement('h1',{},'Hello World!'),
-  document.body
+  <Main />,
+  document.getElementById('main')
 );
