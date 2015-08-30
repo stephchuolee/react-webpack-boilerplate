@@ -4,7 +4,6 @@ module.exports = React.createClass({
 
   handleChange: function(event){
     this.props.onTextChange(event.target.value)
-    // console.log(event.target.value)
   },
 
   render: function(){

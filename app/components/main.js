@@ -5,6 +5,10 @@ var Button = require('./button')
 var Row = require('./row')
 var Col = require('./col')
 
+var deleteArray = function(arr,arrIndex){
+    return arr.slice(0,arrIndex).concat(arr.slice(arrIndex + 1));
+}
+
 module.exports = React.createClass({
   getInitialState: function(){
     return {
@@ -15,8 +19,12 @@ module.exports = React.createClass({
   },
 
   handleAddItem: function (){
+    var newItem = {
+      name: this.state.todoInput, 
+      completed: false
+    }
     this.setState({
-      todos: this.state.todos.concat(this.state.todoInput)
+      todos: this.state.todos.concat(newItem)
     })
   },
 
@@ -24,6 +32,21 @@ module.exports = React.createClass({
     //  change value from empty string to value
     this.setState({
       todoInput: value
+    })
+  },
+
+  handleCompletedItem: function(id) {
+   var newList = this.state.todos
+   newList[id].completed = true
+   this.setState ({
+     todos: newList
+   })
+  },
+
+  handleDeletedItem: function(id){
+    var newList = deleteArray(this.state.todos, id)
+    this.setState({
+      todos: newList      
     })
   },
 
@@ -38,7 +61,7 @@ module.exports = React.createClass({
         <h1>{name + "'s"} Todo List</h1>
         <Row>
           <Col size={10}>
-            <TextField placeholder={"Probably hummus related"} value={this.state.todoInput} onTextChange={this.handleTodoInput}/>
+            <TextField placeholder={"New task"} value={this.state.todoInput} onTextChange={this.handleTodoInput}/>
           </Col>
           <Col size={1}>
             <Button buttontext = {"Add"} onButtonClick={this.handleAddItem}/>
@@ -47,7 +70,7 @@ module.exports = React.createClass({
 
         <Row>
           <Col size={12}>
-            <TodoList todos={todos} />
+            <TodoList todos={todos} onItemComplete={this.handleCompletedItem} onItemDelete={this.handleDeletedItem}/>
           </Col>
         </Row>
 
